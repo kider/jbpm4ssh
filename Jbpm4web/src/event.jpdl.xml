@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process name="event" xmlns="http://jbpm.org/4.4/jpdl">
+	<on event="start">
+		<event-listener class="com.jbpm.testCase.JbpmListener"/>
+	</on>
+	<on event="end">
+		<event-listener class="com.jbpm.testCase.JbpmListener"/>
+	</on>
+	<start g="90,42,48,48" name="start1">
+		<on event="start">
+			<event-listener class="com.jbpm.testCase.JbpmListener"/>
+		</on>
+		<on event="end">
+			<event-listener class="com.jbpm.testCase.JbpmListener"/>
+		</on>
+		<transition g="-59,-17" name="to state1" to="state1"/>
+	</start>
+	<state g="203,167,92,52" name="state1">
+		<on event="start">
+			<event-listener class="com.jbpm.testCase.StateStartListener"/>
+		</on>
+		<on event="end">
+			<event-listener class="com.jbpm.testCase.StateEndListener"/>
+		</on>
+		<transition g="-47,-17" name="to end1" to="end1"/>
+	</state>
+	<end g="96,288,48,48" name="end1">
+		<on event="start">
+			<event-listener class="com.jbpm.testCase.JbpmListener"/>
+		</on>
+		<on event="end">
+			<event-listener class="com.jbpm.testCase.JbpmListener"/>
+		</on>
+	</end>
+</process>
