@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+    <struts>
+    <constant name="struts.ognl.allowStaticMethodAccess" value="true"></constant>
+    <package name="jbpmpackage" extends="struts-default">
+    <action name="jbpmAction" class="jbpmAction" >
+    <result name="resultpage">
+    /result.jsp
+    </result>
+    <result name="personIndex">
+    /index.jsp
+    </result>
+    <result name="backPersonIndex" type="redirect">
+    jbpmAction!showPersonDesk.action
+    </result>
+    <result name="viewTask">
+    /viewTask.jsp
+    </result>
+    <result name="viewWorkFlow">
+    /viewWorkFlow.jsp
+    </result>
+    <result name="login">
+    /login.jsp
+    </result>
+    <result name="viewTaskOther">
+    /viewTaskOther.jsp
+    </result>
+    </action>
+    </package>
+    </struts>
+

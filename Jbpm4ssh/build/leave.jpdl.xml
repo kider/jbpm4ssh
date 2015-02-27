@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process name="leave" xmlns="http://jbpm.org/4.4/jpdl">
+   <start g="144,24,48,48" name="start1">
+      <transition to="申请"/>
+   </start>
+   <task assignee="#{ower}" g="121,105,92,52" name="申请">
+      <transition g="-14,-12" name="批准" to="经理审批"/>
+   </task>
+   <task assignee="manager" g="123,185,92,52" name="经理审批">
+      <transition g="-15,-12" name="批准" to="exclusive1"/>
+      <transition g="270,209;268,128:-13,-8" name="驳回" to="申请"/>
+   </task>
+   <decision expr="#{day > 3 ? '老板审批' : '结束'}" g="149,290,48,48" name="exclusive1">
+      <transition g="-10,-17" name="结束" to="end1"/>
+      <transition g="-15,-4" name="老板审批" to="老板审批"/>
+   </decision>
+   <task assignee="boss" g="249,350,92,52" name="老板审批">
+      <transition g="-10,-7" name="结束" to="end1"/>
+   </task>
+   <end g="151,417,48,48" name="end1"/>
+   
+</process>

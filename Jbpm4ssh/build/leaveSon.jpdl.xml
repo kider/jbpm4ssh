@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process name="leaveSon" xmlns="http://jbpm.org/4.4/jpdl" key="leaveSon">
+	<swimlane assignee="#{subhperson}" name="headPersonsw">
+	</swimlane>
+   <start g="53,220,48,48" name="start1">
+      <transition g="-29,-7" name="接收" to="部门领导接收"/>
+   </start>
+   <task g="166,220,92,52" name="部门领导接收" swimlane="headPersonsw">
+      <transition g="-30,-6" name="办理" to="部门办理人"/>
+   </task>
+   <task g="317,220,92,52" name="部门办理人">
+      <transition g="-22,-7" name="查看" to="部门领导查看"/>
+   </task>
+   <task g="461,220,92,52" name="部门领导查看" swimlane="headPersonsw">
+      <transition g="-27,-4" name="通过" to="end1"/>
+   </task>
+   <end g="596,220,48,48" name="end1"/>
+</process>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+      "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.entity.leave.User" table="SYS_USER" lazy="true">
+        <id name="userId" type="java.lang.String">
+   		<column length="24" name="USER_ID"/>
+  		<generator class="assigned"/>
+ 		</id>
+        <property name="userName" generated="never" type="java.lang.String">
+        <column length="16" name="USER_NAME"></column>
+        </property>
+        <many-to-one class="com.entity.leave.Group" name="group" fetch="join">
+   		<column name="GROUP_ID"/>
+  		</many-to-one>
+    </class>
+</hibernate-mapping>

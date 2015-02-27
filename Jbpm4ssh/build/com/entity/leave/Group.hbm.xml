@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+      "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.entity.leave.Group" table="SYS_GROUP">
+        <id name="groupId" type="java.lang.String">
+   		<column length="12" name="GROUP_ID"/>
+  		<generator class="assigned"/>
+ 		</id>
+        <property name="groupName" generated="never" type="java.lang.String">
+        <column length="50" name="GROUP_NAME"></column>
+        </property>
+        <set name="users" inverse="true" cascade="all-delete-orphan" fetch="join">
+        <key>
+        <column name="GROUP_ID"></column>
+        </key>
+        <one-to-many class="com.entity.leave.User" />
+        </set>
+    </class>
+</hibernate-mapping>

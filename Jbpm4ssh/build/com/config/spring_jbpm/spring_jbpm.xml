@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+<bean id="jbpmDAO" class="com.daos.daoImpl.jbpm.JbpmDaoImpl">
+<property name="repositoryService" ref="repositoryService"></property>
+<property name="executionService" ref="executionService"></property>
+<property name="historyService" ref="historyService"></property>
+<property name="managementService" ref="managementService"></property>
+<property name="taskService" ref="taskService"></property>
+<property name="identityService" ref="identityService"></property>
+</bean>
+<bean id="sysUserDAO" class="com.daos.daoImpl.jbpm.SysUserDaoImpl">
+<property name="sessionFactory" ref="sessionFactory"></property>
+</bean>
+<bean id="leaveDAO" class="com.daos.daoImpl.jbpm.LeaveDaoImpl">
+<property name="sessionFactory" ref="sessionFactory"></property>
+</bean>
+<bean id="jbpmService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="com.services.serviceImpl.jbpm.JbpmServiceImpl">
+				<property name="jbpmDAO" ref="jbpmDAO"></property>
+				<property name="leaveDAO" ref="leaveDAO"></property>
+				<property name="sysUserDAO" ref="sysUserDAO"></property>
+			</bean>
+		</property>
+</bean>
+</beans>

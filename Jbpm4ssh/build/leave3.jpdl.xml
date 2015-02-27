@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process name="mytest" xmlns="http://jbpm.org/4.4/jpdl">
+   <start g="251,-8,48,48" name="开始">
+      <transition g="-9,-7" name="申请" to="经办人"/>
+   </start>
+   <task assignee="#{ower}" g="229,76,92,52" name="经办人">
+      <transition g="-9,-5" name="提交" to="判断角色"/>
+   </task>
+   <decision expr="#{ismanager=='2' ? '经理' : '经办人'}" g="248,212,48,48" name="判断角色">
+      <transition g="-10,-7" name="经办人" to="经理"/>
+      <transition g="-17,-6" name="经理" to="分支"/>
+   </decision>
+   <task assignee="#{manager}" g="80,213,92,52" name="经理">
+      <transition g="-29,-15" name="批准" to="是否大于三天"/>
+      <transition g="-46,-75" name="不批准" to="终止"/>
+      <transition g="128,100:-16,78" name="驳回" to="经办人"/>
+   </task>
+   <decision expr="#{day > 3 ? '老板审批':'批准'}" g="182,347,48,48" name="是否大于三天">
+      <transition g="-10,-9" name="批准" to="结束"/>
+      <transition g="-59,26" name="老板审批" to="分支"/>
+   </decision>
+   <task assignee="#{boss}" g="287,369,92,52" name="老板审批">
+      <transition g="-24,-33" name="审批" to="汇聚"/>
+   </task>
+   <end-cancel g="103,687,48,48" name="终止"/>
+   <end g="384,689,48,48" name="结束"/>
+   <task assignee="#{fboss}" g="423,369,92,52" name="副老板审批">
+      <transition g="-1,-30" name="审批" to="汇聚"/>
+   </task>
+   <fork g="381,210,48,48" name="分支">
+      <transition g="-29,-29" name="老板审批" to="老板审批"/>
+      <transition g="-31,-28" name="副老板审批" to="副老板审批"/>
+   </fork>
+   <join g="383,512,48,48" name="汇聚">
+      <transition g="-25,-9" name="是否批准" to="判断是否批准"/>
+   </join>
+   <decision g="383,595,48,48" name="判断是否批准">
+   <handler class="com.services.jbpmDecisionImpl.BossDecisionImpl" />
+      <transition g="5,-11" name="不批准" to="终止"/>
+      <transition g="-13,-16" name="批准" to="结束"/>
+      <transition g="518,619;527,107:-12,70" name="驳回" to="经办人"/>
+      
+   </decision>
+</process>

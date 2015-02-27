@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+<!-- 数据源 -->
+<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+<property name="url" value="jdbc:mysql://localhost:3306/jbpm?useUnicode=true&amp;characterEncoding=utf8"></property>
+<property name="username" value="jbpm"></property>
+<property name="password" value="jbpm"></property>
+<property name="maxActive" value="100"></property>
+<property name="maxIdle" value="30"></property>
+<property name="maxWait" value="200"></property>
+<property name="defaultAutoCommit" value="false"></property>
+</bean>
+
+<!--
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+	<property name="jndiName">
+	<value>java:comp/env/jdbc/Jbpm4ssh</value>
+	</property>
+	</bean>
+-->
+<!-- 把hibernate 注入到spring中去 -->
+<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+<property name="dataSource" ref="dataSource"></property>
+<property name="hibernateProperties">
+<props>
+<prop key="hibernate.dialect">com.mysql.MySQLDialectUseUtf8</prop>
+<prop key="hibernate.show_sql">true</prop>
+<prop key="hibernate.hbm2ddl.auto">update</prop>
+<prop key="hibernate.format_sql">true</prop>
+</props>
+</property>
+<property name="mappingResources">
+<list>
+<value>jbpm.execution.hbm.xml</value>   
+<value>jbpm.history.hbm.xml</value>   
+<value>jbpm.identity.hbm.xml</value>   
+<value>jbpm.repository.hbm.xml</value>   
+<value>jbpm.task.hbm.xml</value>   
+<value>com/entity/leave/Leave.hbm.xml</value>   
+<value>com/entity/leave/User.hbm.xml</value>   
+<value>com/entity/leave/Group.hbm.xml</value>   
+</list>
+</property>
+</bean>
+<!--jbpm4.4工作流  -->   
+<bean id="springHelper" class="org.jbpm.pvm.internal.processengine.SpringHelper">   
+<property name="jbpmCfg" value="com/config/spring_system/spring-jbpm4.cfg.xml" />   
+</bean>   
+<!-- 获取jbpm4.4服务 -->
+<bean id="processEngine" factory-bean="springHelper" factory-method="createProcessEngine" />  
+<bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />  
+<bean id="executionService" factory-bean="processEngine" factory-method="getExecutionService" />  
+<bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" />  
+<bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" />  
+<bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />  
+<bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService" />  
+
+	<!-- 声明spring事务管理-->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<!--  spring事务传播机制 在Service层进行事务管理 -->
+	<bean id="txProxyTemplate" abstract="true" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="query*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="inquery*">
+					PROPAGATION_REQUIRED,readOnly
+				</prop>
+				<prop key="inquiry*">
+					PROPAGATION_REQUIRED,readOnly
+				</prop>
+				<prop key="validate*">
+					PROPAGATION_REQUIRED,-Exception
+				</prop>
+				<prop key="delete*">
+					PROPAGATION_REQUIRED,-Exception
+				</prop>
+				<prop key="remove*">
+					PROPAGATION_REQUIRED,-Exception
+				</prop>
+				<prop key="save*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="add*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="process*">
+					PROPAGATION_REQUIRED,-Exception
+				</prop>
+				<prop key="insert*">
+					PROPAGATION_REQUIRED,-Exception
+				</prop>
+				<prop key="create*">
+					PROPAGATION_REQUIRED,-Exception
+				</prop>
+				<prop key="import*">
+					PROPAGATION_REQUIRED,-Exception
+				</prop>
+				<prop key="update*">
+					PROPAGATION_REQUIRED,-Exception
+				</prop>
+				<prop key="modify*">
+					PROPAGATION_REQUIRED,-Exception
+				</prop>
+				<prop key="persist*">
+					PROPAGATION_REQUIRED,-Exception
+				</prop>
+				<prop key="*">PROPAGATION_REQUIRED,-Exception</prop>
+			</props>
+		</property>
+	</bean>
+</beans>

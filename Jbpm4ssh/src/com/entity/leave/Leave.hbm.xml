@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+      "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.entity.leave.Leave" table="LEAVE_INFO" lazy="false">
+        <id name="id" type="java.lang.String">
+   		<column length="24" name="ID"/>
+  		<generator class="assigned"/>
+ 		</id>
+        <property name="workFlowId" lazy="false" generated="never" type="java.lang.String">
+        <column length="20" name="WORKFLOW_ID"></column>
+        </property>
+        <property name="leaveDay" lazy="false" generated="never" type="java.lang.String">
+        <column length="4" name="LEAVE_DAY"></column>
+        </property>
+        <property name="leaveReason" lazy="false" generated="never" type="java.lang.String">
+        <column length="400" name="LEAVE_REASON"></column>
+        </property>
+    </class>
+</hibernate-mapping>

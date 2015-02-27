@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process name="leave4" xmlns="http://jbpm.org/4.4/jpdl">
+   <start g="141,10,48,48" name="start1">
+      <transition to="申请"/>
+   </start>
+   <task assignee="#{ower}" g="118,82,92,52" name="申请">
+      <transition g="-14,-12" name="批准" to="经理审批"/>
+   </task>
+   <task assignee="#{manager}" g="120,181,92,52" name="经理审批">
+      <transition g="270,209;269,110:-13,-8" name="驳回" to="申请"/>
+      <transition g="-30,-14" name="部门会签" to="部门会签"/>
+   </task>
+   <task assignee="#{boss}" g="125,439,92,52" name="老板审批">
+      <transition g="-10,-7" name="结束" to="end1"/>
+   </task>
+   <end g="147,533,48,48" name="end1"/>
+   <sub-process g="121,270,92,52" name="部门会签" sub-process-key="leaveSon">
+   <parameter-in subvar="subhperson" var="hperson"/>
+   <parameter-out subvar="subapprove" var="approve"/>
+   <transition to="会签是否成功"/>
+   </sub-process>
+   <decision g="145,356,48,48" name="会签是否成功">
+      <transition g="-25,-10" name="老板审批" to="老板审批"/>
+   </decision>
+   
+</process>
